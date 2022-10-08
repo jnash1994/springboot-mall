@@ -29,14 +29,7 @@ public class ProductDaoImpl  implements ProductDao {
     public Integer countProduct(ProductQueryParams productQueryParams) {
         String sql="SELECT count(*) FROM product WHERE 1=1";
         Map <String,Object> map=new HashMap<>();
-        if(productQueryParams.getCategory() !=null){
-            sql = sql+" AND category=:category";
-            map.put("category",productQueryParams.getCategory().name());
-        }
-        if(productQueryParams.getSearch() !=null){
-            sql=sql+" AND product_name Like :search";//Like 模糊查詢
-            map.put("search","%"+productQueryParams.getSearch() +"%");
-        }
+        sql=addFilteringSql(sql,map,productQueryParams);
         Integer total=namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
         return total;
     }
@@ -48,15 +41,7 @@ public class ProductDaoImpl  implements ProductDao {
                 "from product WHERE 1=1";
         Map <String,Object> map=new HashMap<>();
         // 查詢條件
-        if(productQueryParams.getCategory() !=null){
-            sql = sql+" AND category=:category";
-            map.put("category",productQueryParams.getCategory().name());
-        }
-
-        if(productQueryParams.getSearch() !=null){
-            sql=sql+" AND product_name Like :search";//Like 模糊查詢
-            map.put("search","%"+productQueryParams.getSearch() +"%");//
-        }
+        sql=addFilteringSql(sql,map,productQueryParams);
        // 排序
         sql=sql+" ORDER BY "+ productQueryParams.getOrderBy()+" "+productQueryParams.getSort();
         //分頁
@@ -133,4 +118,20 @@ Map<String ,Object> map=new HashMap<>();
         map.put("productId",productId);
         namedParameterJdbcTemplate.update(sql,map);
     }
+
+    private String addFilteringSql(String sql,Map<String,Object> map,ProductQueryParams productQueryParams){
+        if(productQueryParams.getCategory() !=null){
+            sql = sql+" AND category=:category";
+            map.put("category",productQueryParams.getCategory().name());
+        }
+        if(productQueryParams.getSearch() !=null){
+            sql=sql+" AND product_name Like :search";//Like 模糊查詢
+            map.put("search","%"+productQueryParams.getSearch() +"%");
+        }
+        return sql;
+    }
+
+
+
+
 }
