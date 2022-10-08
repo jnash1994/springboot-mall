@@ -1,7 +1,8 @@
 package com.Nash.springbootmall.dao.impl;
 
-import com.Nash.springbootmall.constant.ProductCategory;
+
 import com.Nash.springbootmall.dao.ProductDao;
+import com.Nash.springbootmall.dto.ProductQueryParams;
 import com.Nash.springbootmall.dto.ProductRequest;
 import com.Nash.springbootmall.model.Product;
 import com.Nash.springbootmall.rowmapper.ProductRowMapper;
@@ -25,19 +26,19 @@ public class ProductDaoImpl  implements ProductDao {
 
 
     @Override
-    public List<Product> getProducts(ProductCategory category,String search) {
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql="SELECT  product_id ,product_name, category, image_url, price, stock, description, " +
                 "created_date, last_modified_date " +
                 "from product WHERE 1=1";
         Map <String,Object> map=new HashMap<>();
-        if(category !=null){
+        if(productQueryParams.getCategory() !=null){
             sql = sql+" AND category=:category";
-            map.put("category",category.name());
+            map.put("category",productQueryParams.getCategory().name());
         }
 
-        if(search !=null){
+        if(productQueryParams.getSearch() !=null){
             sql=sql+" AND product_name Like :search";//Like 模糊查詢
-            map.put("search","%"+search+"%");//
+            map.put("search","%"+productQueryParams.getSearch() +"%");//
         }
 
 

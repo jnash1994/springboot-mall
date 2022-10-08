@@ -1,6 +1,7 @@
 package com.Nash.springbootmall.controller;
 
 import com.Nash.springbootmall.constant.ProductCategory;
+import com.Nash.springbootmall.dto.ProductQueryParams;
 import com.Nash.springbootmall.dto.ProductRequest;
 import com.Nash.springbootmall.model.Product;
 import com.Nash.springbootmall.service.ProductService;
@@ -22,7 +23,10 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam (required = false)ProductCategory category,
             @RequestParam(required = false) String search) {   //讓篩選變成非選項
-        List<Product> productList=productService.getProducts(category,search);
+        ProductQueryParams productQueryParams=new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+        List<Product> productList=productService.getProducts(productQueryParams);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 

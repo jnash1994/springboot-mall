@@ -1,7 +1,8 @@
 package com.Nash.springbootmall.service.impl;
 
-import com.Nash.springbootmall.constant.ProductCategory;
+
 import com.Nash.springbootmall.dao.ProductDao;
+import com.Nash.springbootmall.dto.ProductQueryParams;
 import com.Nash.springbootmall.dto.ProductRequest;
 import com.Nash.springbootmall.model.Product;
 import com.Nash.springbootmall.service.ProductService;
@@ -16,8 +17,8 @@ public class ProductServiceImpl  implements ProductService {
     private ProductDao productDao;
 
     @Override
-    public List<Product> getProducts(ProductCategory category,String search) {
-        return productDao.getProducts(category,search) ;
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
+        return productDao.getProducts(productQueryParams) ;
     }
 
     @Override
