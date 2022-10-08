@@ -1,5 +1,6 @@
 package com.Nash.springbootmall.controller;
 
+import com.Nash.springbootmall.constant.ProductCategory;
 import com.Nash.springbootmall.dto.ProductRequest;
 import com.Nash.springbootmall.model.Product;
 import com.Nash.springbootmall.service.ProductService;
@@ -18,8 +19,10 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(){
-        List<Product> productList=productService.getProducts();
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam (required = false)ProductCategory category,
+            @RequestParam(required = false) String search) {   //讓篩選變成非選項
+        List<Product> productList=productService.getProducts(category,search);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 
