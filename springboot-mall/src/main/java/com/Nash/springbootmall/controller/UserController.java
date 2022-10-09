@@ -1,5 +1,6 @@
 package com.Nash.springbootmall.controller;
 
+import com.Nash.springbootmall.dto.UserLoginRequest;
 import com.Nash.springbootmall.dto.UserRegisterRequest;
 import com.Nash.springbootmall.model.User;
 import com.Nash.springbootmall.service.UserService;
@@ -23,6 +24,12 @@ public class UserController {
         User user=userService.getUserById(userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
+    @PostMapping("/users/login")
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
+        User user=userService.login(userLoginRequest);
 
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+
+    }
 
 }
